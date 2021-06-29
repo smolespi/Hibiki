@@ -1,0 +1,4 @@
+[submodule "src/webserver/frontend"]
+	path = src/webserver/frontend
+	url = git@github.com:vottuscode/hibiki-indev
+  branch = develop

@@ -66,3 +66,6 @@ Temporary Items
 .fuse_hidden*
 .nfs*
 .Trash-*
+
+# Some trash ill remove later
+trash.txt

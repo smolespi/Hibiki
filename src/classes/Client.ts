@@ -25,6 +25,7 @@ import { startWebserver } from "../webserver/index";
 import path from "path";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
+import { RedisProvider } from "./Redis";
 
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
@@ -35,6 +36,7 @@ export class HibikiClient extends Client {
   config: typeof config;
   cooldowns: Map<string, Date>;
   db: RethinkProvider;
+  redis: RedisProvider;
   events: Array<Event> = [];
   inviteHandler: InviteHandler;
   lavalink: Lavalink;
@@ -70,6 +72,7 @@ export class HibikiClient extends Client {
     this.log = logger;
     this.args = new Args(this);
     this.db = new RethinkProvider();
+    this.redis = new RedisProvider();
     this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
     this.inviteHandler = new InviteHandler(this);
@@ -109,7 +112,7 @@ export class HibikiClient extends Client {
 
     // Starts webservers at first boot
     if (process.uptime() < 20) {
-      if (config.dashboard.port && config.dashboard.botSecret && config.dashboard.redirectURI) startWebserver(this);
+      if (config.dashboard.port && config.dashboard.botSecret) startWebserver(this);
     }
 
     this.log.info(`${this.commands.length} commands loaded`);
